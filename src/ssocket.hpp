@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <string.h>
-// #include "strlib.hpp"
 
 #ifdef _WIN32
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -100,7 +99,6 @@ public:
         sock.sin_port = htons(port);
 
         if (bind(s, (struct sockaddr*)&sock, sizeof(sock)) == SOCKET_ERROR) {
-            //std::cout << "binding error" << std::endl;
             throw GETSOCKETERRNO();
         }
 
@@ -152,7 +150,6 @@ public:
 
     void slisten(int clients) {
         if (listen(s, clients) == SOCKET_ERROR) {
-            //std::cout << "listening error" << std::endl;
             throw GETSOCKETERRNO();
         }
     }
@@ -235,7 +232,6 @@ public:
         data.length = recv(s, buffer, length, 0);
         data.value = buffer;
         if (data.length > 65536) {data.length = 0;}
-        // memset(buffer, 0, 32768);
         return data;
 
     }
