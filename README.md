@@ -1,5 +1,4 @@
 # linux-sound-server
 require libasound2, libasound2-dev
 
-
-compilation: g++ server.cpp -o server -lasound -pthread -Ofast
+compilation: g++ server.cpp -o server -lasound -lpthread -Ofast
