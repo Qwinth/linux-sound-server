@@ -1,7 +1,5 @@
-#include <iostream>
 #include <string>
 #include <thread>
-#include <chrono>
 #include <vector>
 #include "alsaLib.hpp"
 #include "ssocket.hpp"
@@ -47,19 +45,17 @@ void handler(SSocket sock) {
 
     int period = pcm.getPeriod(0);
     int buff_size = period * channels * pcm.getFormatWidth() / 8;
-    // buff = (char*)malloc(buff_size * 2);
 
     SSocket::recvdata data;
-    // pcm.prepare();
-    
-    data.value = (char*)malloc(buff_size);
+    data.value = (char*)alloca(buff_size);
     data.value = {0};
     sock.ssend(to_string(buff_size));
     
     while (true) {
-        data = sock.srecv_char(buff_size * 2);
-        // snd_pcm_wait(pcm.pcm, period/100);
+        data = sock.srecv_char(buff_size);
+
         if (data.length == 0) {
+            pcm.drop();
             break;
         }
         else if (data.length < buff_size) {
@@ -68,12 +64,14 @@ void handler(SSocket sock) {
         }
         while (err = pcm.writei(data.value, period) == -EPIPE) {
         pcm.prepare();
-        // cout << "yes" << endl;
+        }
+        
+        if (err < 0) {
+        break;
         }
         sock.ssend("ok");
     }
     sock.ssend("exit");
-    pcm.drop();
     pcm.close();
     sock.sclose();
     
