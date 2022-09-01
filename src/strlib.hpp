@@ -13,10 +13,10 @@ inline string format(const char* fmt, ...){
     va_list vl;
     va_start(vl, fmt);
     int nsize = vsnprintf(buffer, size, fmt, vl);
-    if(size<=nsize){ //fail delete buffer and try again
+    if(size<=nsize) {
         delete[] buffer;
         buffer = 0;
-        buffer = new char[nsize+1]; //+1 for /0
+        buffer = new char[nsize+1];
         nsize = vsnprintf(buffer, size, fmt, vl);
     }
     string ret(buffer);
