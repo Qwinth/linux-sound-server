@@ -1,7 +1,7 @@
 #include <string>
 #include <thread>
 #include <vector>
-#include "alsaLib.hpp"
+#include "alsalib.hpp"
 #include "ssocket.hpp"
 #include "strlib.hpp"
 using namespace std;
