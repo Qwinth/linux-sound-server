@@ -66,7 +66,8 @@ void handler(SSocket sock) {
         }
         
         if (err < 0) {
-        break;
+            pcm.drop();
+            break;
         }
         
     }
