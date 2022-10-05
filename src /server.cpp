@@ -47,8 +47,6 @@ void handler(SSocket sock) {
     int buff_size = period * channels * pcm.getFormatWidth() / 8;
 
     SSocket::recvdata data;
-    data.value = (char*)alloca(buff_size);
-    data.value = {0};
     sock.ssend(to_string(buff_size));
     
     while (true) {
