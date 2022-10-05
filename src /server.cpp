@@ -51,7 +51,11 @@ void handler(SSocket sock) {
     
     while (true) {
         data = sock.srecv_char(buff_size);
-
+        sock.ssend("ok");
+        while (err = pcm.writei(data.value, period) == -EPIPE) {
+            pcm.prepare();
+        }
+        
         if (data.length == 0) {
             pcm.drop();
             break;
@@ -60,14 +64,11 @@ void handler(SSocket sock) {
             pcm.drain();
             break;
         }
-        while (err = pcm.writei(data.value, period) == -EPIPE) {
-        pcm.prepare();
-        }
         
         if (err < 0) {
         break;
         }
-        sock.ssend("ok");
+        
     }
     sock.ssend("exit");
     pcm.close();
